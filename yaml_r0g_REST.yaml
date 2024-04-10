@@ -1,0 +1,386 @@
+# metadati
+openapi: 3.0.3
+info:
+  title: R0G Server 1.0
+  description: >
+     Server per la gestione di utenti developer e giochi 
+  version: "0.1"
+servers:
+  - url: https://www.r0g.com
+    description: the best game server existing
+# path  
+paths:
+  /developers:
+    get:
+      tags: 
+      - developers
+      summary: returns all the developers.
+      description: returns all the developers.
+      responses:
+        '200':    # status code
+          description: query successfull
+          content:
+            application/json: # media type
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  required:
+                    - e_mail
+                    - name
+                    - surname
+                    - birth
+                    - password
+                    - data_registrazione
+                  properties:
+                    e_mail: 
+                      type: string
+                    name:
+                      type: string
+                    surname:
+                      type: string
+                    birth:
+                      type: string
+                    password:
+                      type: string
+                    data_registrazione:
+                      type: string
+  /developers/{e_mail}{name}{surname}{birth}{password}{data_registrazione}:
+    post: 
+      tags: 
+        - developers
+      summary: register a deveoper
+      parameters:
+        - name: e_mail
+          in: path
+          required: true
+          schema:
+            type : string
+        - name: name
+          in: path
+          required: true
+          schema:
+            type : string
+        - name: surname
+          in: path
+          required: true
+          schema:
+            type : string
+        - name: birth
+          in: path
+          required: true
+          schema:
+            type : string
+        - name: password
+          in: path
+          required: true
+          schema:
+            type : string
+        - name: data_registrazione
+          in: path
+          required: true
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: object created
+        '505':
+          description: missing parameters
+  /developers/{e_mail}{password}:
+    get: 
+      tags: 
+        - developers
+      summary: check if the credentials are correct
+      parameters:
+        - name: e_mail
+          in: path
+          required: true
+          schema:
+            type : string
+        - name: password
+          in: path
+          required: true
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: object created
+          content:
+            application/json: 
+              schema: 
+                type: object
+                required:
+                  - e_mail
+                  - name
+                  - surname
+                  - birth
+                  - password
+                  - data_registrazione
+                properties:
+                  e_mail: 
+                    type: string
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  birth:
+                    type: string
+                  password:
+                    type: string
+                  data_registrazione:
+                    type: string
+        '400':
+          description: wrong password
+        '500':
+          description: account inexistent
+        '505':
+          description: missing parameters
+  /developers/{e_mail}:
+    get:
+      tags: 
+      - developers
+      summary: returns a developer by e_mail.
+      parameters:
+        - name: e_mail
+          in: path   # the location of paramether
+          required: true
+          description: parameter description in CommonMark or HTML.
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: object
+                required:
+                  - e_mail
+                  - name
+                  - surname
+                  - birth
+                  - password
+                  - data_registrazione
+                properties:
+                  e_mail: 
+                    type: string
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  birth:
+                    type: string
+                  password:
+                    type: string
+                  data_registrazione:
+                    type: string
+        '500':
+          description: account inexistent
+        '505':
+          description: missing parameters
+    delete: 
+    
+      tags: 
+        - developers
+      summary: delete a developer by e_mail
+      parameters:
+        - name: e_mail
+          in: path
+          required: true
+          schema:
+            type : string
+      responses:
+        '200':
+          description: deleted
+        '500':
+          description: account inexistent
+        '505':
+          description: missing parameters
+          
+          
+          
+          
+  /games:
+    get:
+      tags: 
+      - games
+      summary: returns all the games.
+      responses:
+        '200':    # status code
+          description: query successfull
+          content:
+            application/json: # media type
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  required:
+                    - id
+                    - name
+                    - description
+                    - price
+                    - discount
+                    - dev_mail
+                    - publish_date
+                  properties:
+                    id: 
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
+                    discount:
+                      type: integer
+                    publish_date:
+                      type: string
+  /games/{name}{description}{price}{discount}{dev_mail}{publish_date}:
+    post: 
+      tags: 
+        - games
+      summary: register a game
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type : string
+        - name: description
+          in: path
+          required: true
+          schema:
+            type : string
+        - name: price
+          in: path
+          required: true
+          schema:
+            type : integer
+        - name: discount
+          in: path
+          required: true
+          schema:
+            type : integer
+        - name: dev_mail
+          in: path
+          required: true
+          schema:
+            type : string
+        - name: publish_date
+          in: path
+          required: true
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: object created
+        '505':
+          description: missing parameters
+  /games/{dev_mail}:
+    get: 
+      tags: 
+        - games
+      summary: return all the games associated with a dev
+      parameters:
+        - name: dev_mail
+          in: path
+          required: true
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: query succesfull
+          content:
+            application/json: 
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  required:
+                    - id
+                    - name
+                    - description
+                    - price
+                    - discount
+                    - dev_mail
+                    - publish_date
+                  properties:
+                    id: 
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
+                    discount:
+                      type: integer
+                    publish_date:
+                      type: string
+        '500':
+          description: account inexistent
+        '505':
+          description: missing parameters
+  /games/{id}:
+    get:
+      tags: 
+      - games
+      summary: returns a game by id.
+      parameters:
+        - name: id
+          in: path   # the location of paramether
+          required: true
+          description: parameter description in CommonMark or HTML.
+          schema:
+            type : integer
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: object
+                required:
+                  - id
+                  - name
+                  - description
+                  - price
+                  - discount
+                  - dev_mail
+                  - publish_date
+                properties:
+                  id: 
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: number
+                  discount:
+                    type: integer
+                  publish_date:
+                    type: string
+        '500':
+          description: game inexistent
+        '505':
+          description: missing parameters
+    delete: 
+    
+      tags: 
+        - games
+      summary: delete a game by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type : integer
+      responses:
+        '200':
+          description: deleted
+        '500':
+          description: game inexistent
+        '505':
+          description: missing parameters
+                  
