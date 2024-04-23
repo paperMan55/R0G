@@ -7,30 +7,34 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
 include_once 'database.php';
-include_once 'Utente.php';
+include_once 'Giochi.php';
  
 $database = new Database();
 $db = $database->getConnection();
-$utenti = new Utente($db);
+$giochi = new Giochi($db);
 $data = json_decode(file_get_contents("php://input"));			// prende il contenuto URL e lo converte da  JSON a PHP		
 									
-if( !empty($data->mail) && !empty($data->name) && !empty($data->password) && !empty($data->sede) ){
-    $utenti->mail = $data->mail;
-    $utenti->name = $data->name;
-    $utenti->password = $data->password;
-    $utenti->sede = $data->sede;
-    
-    if($utenti->create()){
+if( !empty($data->nome) && !empty($data->descrizione) && !empty($data->mail_editore) && !empty($data->data_pubblicazione)&& !empty($data->main_img)){
+	$giochi->nome = $data->nome;
+	$giochi->descrizione = $data->descrizione;
+	$giochi->prezzo = $data->prezzo;
+	$giochi->sconto = $data->sconto;
+	$giochi->mail_editore = $data->mail_editore;
+	$giochi->main_img = $data->main_img;
+	$giochi->data_pubblicazione = $data->data_pubblicazione;
+     
+
+    if($giochi->create()){
         http_response_code(200);
-        echo json_encode(array("message" => "Utente creato correttamente."));
+        echo json_encode(true);
        }
     else{
         http_response_code(500);				  		//503 servizio non disponibile
-        echo json_encode(array("message" => "Impossibile creare utente."));
+        echo json_encode(false);
        }
    }
 else{
     http_response_code(400); 							//400 bad request
-    echo json_encode(array("message" => "Impossibile creare utente i dati sono incompleti."));
+    echo json_encode(false);
    }
 ?>

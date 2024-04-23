@@ -12,8 +12,12 @@ $database = new Database();						// crea un oggetto Database e si collega al dat
 $db = $database->getConnection();
 
 $giochi = new Giochi($db);						
-
-$stmt = $giochi->read();						// legge i dati col metodo read creato da noi
+$stmt;
+if(isset($_GET["cercato"])){
+    $stmt = $giochi->read($_GET["cercato"]);						// legge i dati col metodo read creato da noi
+}else{
+    $stmt = $giochi->read("");
+}
 $num = $stmt->rowCount();
 
 if($num>0){								// se vengono trovati utenti nel database 
@@ -38,5 +42,4 @@ if($num>0){								// se vengono trovati utenti nel database
 }
 else
     echo json_encode( array("message" => "Nessun gioco Trovato.")  );
-
 ?>
