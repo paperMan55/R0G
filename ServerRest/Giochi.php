@@ -79,9 +79,10 @@ class Giochi
 
 
 	function update(){
-    	$query = "UPDATE " . $this->table_name ." SET  nome=:nome, descrizione=:descrizione, prezzo=:prezzo, sconto=:sconto, mail_editore=:mail_editore, main_img=:main_img, valutazione=:valutazione, data_pubblicazione=:data_pubblicazione WHERE id=:id"; 
+    	$query = "UPDATE " . $this->table_name ." SET  nome=:nome, descrizione=:descrizione, prezzo=:prezzo, sconto=:sconto, mail_editore=:mail_editore, main_img=:main_img, data_pubblicazione=:data_pubblicazione WHERE id=:id"; 
     	$stmt = $this->conn->prepare($query);  
     	
+		$this->id = htmlspecialchars(strip_tags($this->id));
 		$this->nome = htmlspecialchars(strip_tags($this->nome));
 		$this->descrizione = htmlspecialchars(strip_tags($this->descrizione));
 		$this->prezzo = htmlspecialchars(strip_tags($this->prezzo));
@@ -90,6 +91,7 @@ class Giochi
 		$this->main_img = htmlspecialchars(strip_tags($this->main_img));
 		$this->data_pubblicazione = htmlspecialchars(strip_tags($this->data_pubblicazione));
 	
+    	$stmt->bindParam(":id",   $this->id);	
     	$stmt->bindParam(":nome",   $this->nome);	
     	$stmt->bindParam(":descrizione",   $this->descrizione);	
     	$stmt->bindParam(":prezzo",   $this->prezzo);	
